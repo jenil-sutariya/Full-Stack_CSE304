@@ -1,0 +1,33 @@
+.app-container {
+  font-family: Arial, sans-serif;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  z-index: 1002;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.menu-btn {
+  font-size: 24px;
+  background-color: #e57373;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  color: white;
+  border-radius: 5px;
+  margin-right: 20px;
+}
+
+.main-content {
+  margin-left: 60px;
+  padding: 80px 20px 20px 20px;
+  
+}
