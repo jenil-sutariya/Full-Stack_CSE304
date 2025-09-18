@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧮 Kids Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧮 Kids Calculator</h1>
+            <p>Let's do some math together!</p>
+        </header>
+        
+        <div class="calculator">
+            <form id="calculatorForm">
+                <div class="input-group">
+                    <label for="num1">First Number:</label>
+                    <input type="text" id="num1" name="num1" placeholder="Enter a number" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="operation">Operation:</label>
+                    <select id="operation" name="operation" required>
+                        <option value="">Choose an operation</option>
+                        <option value="add">➕ Add</option>
+                        <option value="subtract">➖ Subtract</option>
+                        <option value="multiply">✖️ Multiply</option>
+                        <option value="divide">➗ Divide</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="num2">Second Number:</label>
+                    <input type="text" id="num2" name="num2" placeholder="Enter a number" required>
+                </div>
+                
+                <button type="submit" class="calculate-btn">Calculate! 🎯</button>
+            </form>
+            
+            <div id="result" class="result-container">
+                <!-- Results will be displayed here -->
+            </div>
+            
+            <div id="error" class="error-container">
+                <!-- Errors will be displayed here -->
+            </div>
+        </div>
+        
+        <footer>
+            <p>Have fun learning math! 🌟</p>
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
+

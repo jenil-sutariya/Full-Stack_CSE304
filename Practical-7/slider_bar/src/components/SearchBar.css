@@ -1,0 +1,16 @@
+.search-bar {
+  position: fixed;
+  top: 10px;
+  left: 60px;
+  right: 20px;
+  z-index: 1002;
+  display: flex;
+  justify-content: center;
+}
+
+.search-bar input {
+  width: 300px;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Portal - Resume Upload</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Job Portal</h1>
+            <p>Upload your resume to apply for jobs</p>
+        </header>
+
+        <main>
+            <div class="upload-section">
+                <h2>Resume Upload</h2>
+                <form id="resumeForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="name">Full Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="resume">Resume (PDF only, max 2MB):</label>
+                        <input type="file" id="resume" name="resume" accept=".pdf" required>
+                        <div class="file-info">
+                            <small>Accepted format: PDF | Maximum size: 2MB</small>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="upload-btn">Upload Resume</button>
+                </form>
+            </div>
+
+            <div id="message" class="message"></div>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Job Portal. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
