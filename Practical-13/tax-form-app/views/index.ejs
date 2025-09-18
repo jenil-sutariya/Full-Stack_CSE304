@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Tax Form - Income Calculator</h1>
+            <p>Enter your income from two sources to calculate your total income</p>
+        </header>
+
+        <main>
+            <div class="form-container">
+                <% if (errors && errors.length > 0) { %>
+                    <div class="error-messages">
+                        <h3>Please fix the following errors:</h3>
+                        <ul>
+                            <% errors.forEach(error => { %>
+                                <li><%= error %></li>
+                            <% }); %>
+                        </ul>
+                    </div>
+                <% } %>
+
+                <form action="/calculate" method="POST" class="tax-form">
+                    <div class="form-group">
+                        <label for="primaryIncome">Primary Income ($):</label>
+                        <input 
+                            type="number" 
+                            id="primaryIncome" 
+                            name="primaryIncome" 
+                            step="0.01" 
+                            min="0" 
+                            max="10000000"
+                            value="<%= formData ? formData.primaryIncome : '' %>"
+                            required
+                            placeholder="Enter your primary income"
+                        >
+                        <small>Enter your main source of income</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="secondaryIncome">Secondary Income ($):</label>
+                        <input 
+                            type="number" 
+                            id="secondaryIncome" 
+                            name="secondaryIncome" 
+                            step="0.01" 
+                            min="0" 
+                            max="10000000"
+                            value="<%= formData ? formData.secondaryIncome : '' %>"
+                            required
+                            placeholder="Enter your secondary income"
+                        >
+                        <small>Enter your additional source of income</small>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Calculate Total Income</button>
+                        <button type="reset" class="btn btn-secondary">Clear Form</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Tax Form Calculator. All calculations are performed securely on the server.</p>
+        </footer>
+    </div>
+</body>
+</html>

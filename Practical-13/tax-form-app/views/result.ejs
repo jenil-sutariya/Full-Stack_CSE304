@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Tax Form - Results</h1>
+            <p>Your income calculation results</p>
+        </header>
+
+        <main>
+            <div class="results-container">
+                <div class="success-message">
+                    <h2>✅ Income Calculation Complete</h2>
+                    <p>Your total income has been calculated successfully.</p>
+                </div>
+
+                <div class="income-breakdown">
+                    <h3>Income Breakdown</h3>
+                    <div class="income-item">
+                        <span class="label">Primary Income:</span>
+                        <span class="amount">$<%= primaryIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></span>
+                    </div>
+                    <div class="income-item">
+                        <span class="label">Secondary Income:</span>
+                        <span class="amount">$<%= secondaryIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></span>
+                    </div>
+                    <div class="income-item total">
+                        <span class="label">Total Income:</span>
+                        <span class="amount">$<%= totalIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></span>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <a href="/" class="btn btn-primary">Calculate Another Income</a>
+                    <button onclick="window.print()" class="btn btn-secondary">Print Results</button>
+                </div>
+
+                <div class="disclaimer">
+                    <h4>Important Disclaimer</h4>
+                    <p>This calculation is for informational purposes only. Please consult with a tax professional for accurate tax calculations and filing requirements.</p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Tax Form Calculator. All calculations are performed securely on the server.</p>
+        </footer>
+    </div>
+</body>
+</html>
