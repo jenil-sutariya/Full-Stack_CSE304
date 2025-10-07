@@ -187,3 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1b66281 (chore: add Full-Stack folder and commit current changes)

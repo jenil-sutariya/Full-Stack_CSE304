@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Practical 15 - Library Portal (Session Demo)</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Library Portal</h1>
+        <div id="auth">
+            <form id="loginForm">
+                <label for="name">Enter your name to login:</label>
+                <input type="text" id="name" name="name" placeholder="Your name" required />
+                <button type="submit">Login</button>
+            </form>
+            <div id="loginError" class="error" hidden></div>
+        </div>
+
+        <div id="profile" hidden>
+            <h2>Profile</h2>
+            <p><strong>Name:</strong> <span id="profileName"></span></p>
+            <p><strong>Login Time:</strong> <span id="profileLoginTime"></span></p>
+            <button id="logoutBtn">Logout</button>
+        </div>
+    </div>
+
+    <script src="/script.js"></script>
+    <noscript>This app requires JavaScript to function.</noscript>
+</body>
+<style>
+    body { font-family: system-ui, Arial, Helvetica, sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; }
+    .container { max-width: 720px; margin: 48px auto; padding: 24px; background: #111827; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+    h1 { margin-top: 0; }
+    form { display: flex; gap: 12px; align-items: center; }
+    input { flex: 1; padding: 10px 12px; border-radius: 8px; border: 1px solid #334155; background: #0b1220; color: #e2e8f0; }
+    button { padding: 10px 16px; border-radius: 8px; border: 1px solid #334155; background: #2563eb; color: white; cursor: pointer; }
+    button:hover { background: #1d4ed8; }
+    .error { color: #fecaca; margin-top: 8px; }
+    #profile { margin-top: 24px; }
+    #profile p { margin: 6px 0; }
+</style>
+</html>
+
+
+

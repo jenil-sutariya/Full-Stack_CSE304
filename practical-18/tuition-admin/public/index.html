@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tuition Admin - Students</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="container">
+      <h1>Students</h1>
+    </header>
+
+    <main class="container">
+      <section class="card">
+        <h3 id="form-title">Add new student</h3>
+        <form id="student-form">
+          <input type="hidden" id="student-id" />
+          <div class="grid-3">
+            <label>
+              <span>Full name</span>
+              <input id="fullName" required minlength="2" />
+            </label>
+            <label>
+              <span>Email</span>
+              <input id="email" type="email" required />
+            </label>
+            <label>
+              <span>Phone</span>
+              <input id="phone" required />
+            </label>
+            <label>
+              <span>Course</span>
+              <input id="course" required />
+            </label>
+            <label>
+              <span>Batch</span>
+              <input id="batch" required />
+            </label>
+            <label>
+              <span>Fees Paid</span>
+              <input id="feesPaid" type="number" min="0" value="0" />
+            </label>
+          </div>
+          <label>
+            <span>Notes</span>
+            <textarea id="notes" rows="2"></textarea>
+          </label>
+          <div class="actions">
+            <button type="submit" id="submit-btn" class="btn btn-primary">Create</button>
+            <button type="button" id="cancel-edit" class="btn" style="display:none">Cancel edit</button>
+          </div>
+        </form>
+        <p id="message" class="muted"></p>
+      </section>
+
+      <section class="card">
+        <h3>All students</h3>
+        <div class="table-responsive">
+          <table id="students-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Course</th>
+                <th>Batch</th>
+                <th>Fees</th>
+                <th>Joined</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const api = {
+        list: () => fetch('/api/students').then(r => r.json()),
+        create: (data) => fetch('/api/students', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(r => r.json()),
+        update: (id, data) => fetch(`/api/students/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(r => r.json()),
+        remove: (id) => fetch(`/api/students/${id}`, { method: 'DELETE' }).then(r => r.json()),
+      };
+
+      const els = {
+        tableBody: document.querySelector('#students-table tbody'),
+        form: document.querySelector('#student-form'),
+        formTitle: document.querySelector('#form-title'),
+        submitBtn: document.querySelector('#submit-btn'),
+        cancelEdit: document.querySelector('#cancel-edit'),
+        message: document.querySelector('#message'),
+      };
+
+      const fields = ['student-id','fullName','email','phone','course','batch','feesPaid','notes']
+        .reduce((acc, id) => (acc[id] = document.getElementById(id), acc), {});
+
+      function setMessage(text, timeout = 2500) {
+        els.message.textContent = text;
+        if (!text) return;
+        setTimeout(() => { if (els.message.textContent === text) els.message.textContent = ''; }, timeout);
+      }
+
+      function render(students) {
+        els.tableBody.innerHTML = students.map(s => `
+          <tr data-id="${s._id}">
+            <td>${s.fullName}</td>
+            <td>${s.email}</td>
+            <td>${s.phone}</td>
+            <td>${s.course}</td>
+            <td>${s.batch}</td>
+            <td>${s.feesPaid ?? 0}</td>
+            <td>${new Date(s.joinedAt || s.createdAt).toLocaleDateString()}</td>
+            <td class="actions">
+              <button data-action="edit" class="btn btn-small">Edit</button>
+              <button data-action="delete" class="btn btn-small btn-danger">Delete</button>
+            </td>
+          </tr>`).join('');
+      }
+
+      async function refresh() {
+        const data = await api.list();
+        render(data);
+      }
+
+      els.tableBody.addEventListener('click', async (e) => {
+        const btn = e.target.closest('button');
+        if (!btn) return;
+        const tr = btn.closest('tr');
+        const id = tr.dataset.id;
+
+        if (btn.dataset.action === 'edit') {
+          const cells = tr.children;
+          fields['student-id'].value = id;
+          fields.fullName.value = cells[0].textContent;
+          fields.email.value = cells[1].textContent;
+          fields.phone.value = cells[2].textContent;
+          fields.course.value = cells[3].textContent;
+          fields.batch.value = cells[4].textContent;
+          fields.feesPaid.value = parseFloat(cells[5].textContent || '0');
+          fields.notes.value = '';
+          els.formTitle.textContent = 'Edit student';
+          els.submitBtn.textContent = 'Update';
+          els.cancelEdit.style.display = '';
+        }
+
+        if (btn.dataset.action === 'delete') {
+          if (!confirm('Delete this student?')) return;
+          await api.remove(id);
+          setMessage('Deleted');
+          refresh();
+        }
+      });
+
+      els.cancelEdit.addEventListener('click', () => {
+        els.form.reset();
+        fields['student-id'].value = '';
+        els.formTitle.textContent = 'Add new student';
+        els.submitBtn.textContent = 'Create';
+        els.cancelEdit.style.display = 'none';
+      });
+
+      els.form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const payload = {
+          fullName: fields.fullName.value.trim(),
+          email: fields.email.value.trim(),
+          phone: fields.phone.value.trim(),
+          course: fields.course.value.trim(),
+          batch: fields.batch.value.trim(),
+          feesPaid: Number(fields.feesPaid.value || 0),
+          notes: fields.notes.value.trim(),
+        };
+        const id = fields['student-id'].value;
+        const res = id ? await api.update(id, payload) : await api.create(payload);
+        if (res && res._id || res.success) {
+          setMessage(id ? 'Updated' : 'Created');
+          els.form.reset();
+          els.cancelEdit.click();
+          refresh();
+        } else {
+          setMessage(res?.message || 'Error');
+        }
+      });
+
+      refresh();
+    </script>
+  </body>
+  </html>
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tuition Admin - Students</title>
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; }
+      h1 { margin: 0 0 16px; }
+      form, table { margin-top: 16px; width: 100%; max-width: 960px; }
+      input, select, button, textarea { padding: 8px; margin: 4px 0; }
+      table { border-collapse: collapse; width: 100%; }
+      th, td { border: 1px solid #ddd; padding: 8px; }
+      th { background: #f6f6f6; text-align: left; }
+      .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+      .actions button { margin-right: 8px; }
+      .muted { color: #777; }
+    </style>
+  </head>
+  <body>
+    <h1>Students</h1>
+
+    <section>
+      <h3 id="form-title">Add new student</h3>
+      <form id="student-form">
+        <input type="hidden" id="student-id" />
+        <div class="row">
+          <label>
+            Full name
+            <input id="fullName" required minlength="2" />
+          </label>
+          <label>
+            Email
+            <input id="email" type="email" required />
+          </label>
+          <label>
+            Phone
+            <input id="phone" required />
+          </label>
+          <label>
+            Course
+            <input id="course" required />
+          </label>
+          <label>
+            Batch
+            <input id="batch" required />
+          </label>
+          <label>
+            Fees Paid
+            <input id="feesPaid" type="number" min="0" value="0" />
+          </label>
+        </div>
+        <label>
+          Notes
+          <textarea id="notes" rows="2"></textarea>
+        </label>
+        <div>
+          <button type="submit" id="submit-btn">Create</button>
+          <button type="button" id="cancel-edit" style="display:none">Cancel edit</button>
+        </div>
+      </form>
+      <p id="message" class="muted"></p>
+    </section>
+
+    <section>
+      <h3>All students</h3>
+      <table id="students-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Course</th>
+            <th>Batch</th>
+            <th>Fees</th>
+            <th>Joined</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <script>
+      const api = {
+        list: () => fetch('/api/students').then(r => r.json()),
+        create: (data) => fetch('/api/students', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(r => r.json()),
+        update: (id, data) => fetch(`/api/students/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(r => r.json()),
+        remove: (id) => fetch(`/api/students/${id}`, { method: 'DELETE' }).then(r => r.json()),
+      };
+
+      const els = {
+        tableBody: document.querySelector('#students-table tbody'),
+        form: document.querySelector('#student-form'),
+        formTitle: document.querySelector('#form-title'),
+        submitBtn: document.querySelector('#submit-btn'),
+        cancelEdit: document.querySelector('#cancel-edit'),
+        message: document.querySelector('#message'),
+      };
+
+      const fields = ['student-id','fullName','email','phone','course','batch','feesPaid','notes']
+        .reduce((acc, id) => (acc[id] = document.getElementById(id), acc), {});
+
+      function setMessage(text, timeout = 2500) {
+        els.message.textContent = text;
+        if (!text) return;
+        setTimeout(() => { if (els.message.textContent === text) els.message.textContent = ''; }, timeout);
+      }
+
+      function render(students) {
+        els.tableBody.innerHTML = students.map(s => `
+          <tr data-id="${s._id}">
+            <td>${s.fullName}</td>
+            <td>${s.email}</td>
+            <td>${s.phone}</td>
+            <td>${s.course}</td>
+            <td>${s.batch}</td>
+            <td>${s.feesPaid ?? 0}</td>
+            <td>${new Date(s.joinedAt || s.createdAt).toLocaleDateString()}</td>
+            <td class="actions">
+              <button data-action="edit">Edit</button>
+              <button data-action="delete">Delete</button>
+            </td>
+          </tr>`).join('');
+      }
+
+      async function refresh() {
+        const data = await api.list();
+        render(data);
+      }
+
+      els.tableBody.addEventListener('click', async (e) => {
+        const btn = e.target.closest('button');
+        if (!btn) return;
+        const tr = btn.closest('tr');
+        const id = tr.dataset.id;
+
+        if (btn.dataset.action === 'edit') {
+          const cells = tr.children;
+          fields['student-id'].value = id;
+          fields.fullName.value = cells[0].textContent;
+          fields.email.value = cells[1].textContent;
+          fields.phone.value = cells[2].textContent;
+          fields.course.value = cells[3].textContent;
+          fields.batch.value = cells[4].textContent;
+          fields.feesPaid.value = parseFloat(cells[5].textContent || '0');
+          fields.notes.value = '';
+          els.formTitle.textContent = 'Edit student';
+          els.submitBtn.textContent = 'Update';
+          els.cancelEdit.style.display = '';
+        }
+
+        if (btn.dataset.action === 'delete') {
+          if (!confirm('Delete this student?')) return;
+          await api.remove(id);
+          setMessage('Deleted');
+          refresh();
+        }
+      });
+
+      els.cancelEdit.addEventListener('click', () => {
+        els.form.reset();
+        fields['student-id'].value = '';
+        els.formTitle.textContent = 'Add new student';
+        els.submitBtn.textContent = 'Create';
+        els.cancelEdit.style.display = 'none';
+      });
+
+      els.form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const payload = {
+          fullName: fields.fullName.value.trim(),
+          email: fields.email.value.trim(),
+          phone: fields.phone.value.trim(),
+          course: fields.course.value.trim(),
+          batch: fields.batch.value.trim(),
+          feesPaid: Number(fields.feesPaid.value || 0),
+          notes: fields.notes.value.trim(),
+        };
+        const id = fields['student-id'].value;
+        const res = id ? await api.update(id, payload) : await api.create(payload);
+        if (res && res._id || res.success) {
+          setMessage(id ? 'Updated' : 'Created');
+          els.form.reset();
+          els.cancelEdit.click();
+          refresh();
+        } else {
+          setMessage(res?.message || 'Error');
+        }
+      });
+
+      refresh();
+    </script>
+  </body>
+  </html>
+
+

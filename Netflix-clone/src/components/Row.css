@@ -1,0 +1,89 @@
+.row {
+  color: white;
+  margin-left: 20px;
+  position: relative;
+}
+
+.row-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+
+.row-posters {
+  display: flex;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  padding: 20px 0 20px 0;
+  scroll-behavior: smooth;
+}
+
+.row-posters::-webkit-scrollbar {
+  display: none;
+}
+
+.row-poster {
+  object-fit: contain;
+  width: 100%;
+  max-height: 200px;
+  margin-right: 10px;
+  transition: transform 450ms;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.row-poster:hover {
+  transform: scale(1.08);
+}
+
+.row-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  font-size: 2rem;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+  border-radius: 4px;
+}
+
+.row-arrow:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.row-arrow-left {
+  left: 0;
+}
+
+.row-arrow-right {
+  right: 0;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .row {
+    margin-left: 10px;
+  }
+  
+  .row-title {
+    font-size: 1.2rem;
+  }
+  
+  .row-poster {
+    max-height: 150px;
+  }
+  
+  .row-arrow {
+    font-size: 1.5rem;
+    padding: 8px;
+  }
+}

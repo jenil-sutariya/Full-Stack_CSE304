@@ -1,0 +1,162 @@
+.auth-container {
+  min-height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.4) 50%,
+    rgba(0, 0, 0, 0.8) 100%
+  ),
+  url('https://assets.nflxext.com/ffe/siteui/vlv3/9d3533b2-0e2b-40b2-95e0-ecd7979cc88b/a3873901-5b7c-46eb-b9cf-558985becf5c/IN-en-20240311-popsignuptwoweeks-perspective_alpha_website_small.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.auth-form {
+  background: rgba(0, 0, 0, 0.75);
+  border-radius: 4px;
+  padding: 60px 68px 40px;
+  min-width: 450px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.auth-header {
+  margin-bottom: 30px;
+}
+
+.auth-logo {
+  height: 45px;
+  width: auto;
+}
+
+.auth-form-content h1 {
+  color: white;
+  font-size: 32px;
+  font-weight: 500;
+  margin-bottom: 28px;
+}
+
+.auth-input-group {
+  margin-bottom: 16px;
+}
+
+.auth-input-group input {
+  width: 100%;
+  padding: 16px 20px;
+  background: #333;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 16px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.auth-input-group input::placeholder {
+  color: #8c8c8c;
+}
+
+.auth-input-group input:focus {
+  background: #454545;
+}
+
+.auth-error {
+  background: #e87c03;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.auth-submit-btn {
+  width: 100%;
+  background: #e50914;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 24px;
+  transition: background-color 0.2s;
+}
+
+.auth-submit-btn:hover:not(:disabled) {
+  background: #f40612;
+}
+
+.auth-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.auth-help {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  margin-bottom: 40px;
+}
+
+.auth-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.auth-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+
+.auth-checkbox label {
+  color: #b3b3b3;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.auth-help-link {
+  color: #b3b3b3;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.auth-help-link:hover {
+  text-decoration: underline;
+}
+
+.auth-switch {
+  color: #737373;
+  font-size: 16px;
+}
+
+.auth-switch-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.auth-switch-btn:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .auth-form {
+    padding: 40px 20px;
+    min-width: 300px;
+  }
+  
+  .auth-form-content h1 {
+    font-size: 24px;
+  }
+}
+

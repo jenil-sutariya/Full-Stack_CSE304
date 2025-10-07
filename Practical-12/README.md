@@ -89,3 +89,7 @@ This calculator helps kids:
 
 **Have fun learning math! 🌟**
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1b66281 (chore: add Full-Stack folder and commit current changes)

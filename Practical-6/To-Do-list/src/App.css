@@ -46,6 +46,16 @@ h2 {
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.input-section button:hover:not(:disabled) {
+  background-color: #9333ea;
+}
+
+.input-section button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .task-list {
@@ -62,6 +72,17 @@ h2 {
   justify-content: space-between;
   align-items: center;
   color: white;
+  transition: all 0.3s ease;
+}
+
+.task.completed {
+  background-color: #4ade80;
+  opacity: 0.8;
+}
+
+.task:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .actions .icon {

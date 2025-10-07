@@ -94,3 +94,7 @@ app.listen(PORT, () => {
     console.log('Press Ctrl+C to stop the server');
 });
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1b66281 (chore: add Full-Stack folder and commit current changes)
